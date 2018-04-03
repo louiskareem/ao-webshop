@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Carbon\Carbon;
 
 class DummyProductsTableSeeder extends Seeder
 {
@@ -12,42 +13,37 @@ class DummyProductsTableSeeder extends Seeder
     public function run()
     {
         DB::table('products')->insert([
-            'name' => "",
-            'description' => "",
-            'price' => "",
-            'category_id' => "",
+            'name' => "Zero to One",
+            'description' => "author: Peter Thiel",
+            'price' => "15.50",
             'created_at' => Carbon::now()->format('Y-m-d H:i:s')
         ]);
 
         DB::table('products')->insert([
-            'name' => "",
-            'description' => "",
-            'price' => "",
-            'category_id' => "",
+            'name' => "NBA 2K18",
+            'description' => "developer: 2K Sports",
+            'price' => "59.99",
             'created_at' => Carbon::now()->format('Y-m-d H:i:s')
         ]);
 
         DB::table('products')->insert([
-            'name' => "",
-            'description' => "",
-            'price' => "",
-            'category_id' => "",
+            'name' => "Samsung s9+",
+            'description' => "product of Samsung Group",
+            'price' => "800.00",
             'created_at' => Carbon::now()->format('Y-m-d H:i:s')
         ]);
 
         DB::table('products')->insert([
-            'name' => "",
-            'description' => "",
-            'price' => "",
-            'category_id' => "",
+            'name' => "Jack & Jones winter jacket",
+            'description' => "product of Jack & Jones",
+            'price' => "80.00",
             'created_at' => Carbon::now()->format('Y-m-d H:i:s')
         ]);
 
         DB::table('products')->insert([
-            'name' => "",
-            'description' => "",
-            'price' => "",
-            'category_id' => "",
+            'name' => "Tag Heuer chronograph watch",
+            'description' => "product of Tag Heuer Group",
+            'price' => "2990.00",
             'created_at' => Carbon::now()->format('Y-m-d H:i:s')
         ]);
     }

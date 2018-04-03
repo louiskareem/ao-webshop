@@ -18,7 +18,6 @@ class CreateProductsTable extends Migration
             $table->string('name')->nullable();
             $table->string('description')->nullable();
             $table->unsignedDecimal('price', 8, 2);
-            $table->unsignedInteger('category_id')->nullable();
             $table->timestamps();
         });
     }
