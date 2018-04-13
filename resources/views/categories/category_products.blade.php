@@ -11,13 +11,13 @@
                     <table class="table table-hover">
                         <thead>
                             <tr>
-                                <th scope="col">Categories</th>
+                                    <th scope="col">Categories/Products</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($categories as $category)
-                                <tr>
-                                    <td><a class="btn btn-light" href="{{ action('CategoryController@display', $category->id) }}">{{ $category->name }}</a></td>
+                            @foreach($categories->products as $product)
+                                <tr> 
+                                    <td><a class="" href="{{ action('ProductController@display', $product->id) }}">{{ $product->name }}</a></td>
                                 </tr>
                             @endforeach
                         </tbody>

@@ -14,7 +14,9 @@
                         </div>
                     @endif
 
-                    Your shopping cart is empty!
+                    <div>
+                        <h1>Get up to 80% off on new items!</h1>
+                    </div>
                 </div>
             </div>
         </div>

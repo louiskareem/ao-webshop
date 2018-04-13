@@ -18,4 +18,20 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+/**
+ * Routes for Categories
+ */
 Route::get('categories', 'CategoryController@index');
+Route::get('categories/{id}/products', 'CategoryController@display');
+
+/**
+ * Routes for Products
+ */
+Route::get('products', 'ProductController@index');
+Route::get('products/{id}/details', 'ProductController@display');
+
+/**
+ * Routes for Orders
+ */
+Route::get('order/{id}', 'OrderController@getProduct');
