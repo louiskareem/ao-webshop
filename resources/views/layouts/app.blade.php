@@ -39,7 +39,7 @@
 
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
-                        <li><a class="nav-link" href="">Shopping Cart</a></li>
+                        <li><a class="nav-link" href=""><span class="glyphicon glyphicon-shopping-cart"></span><span class="badge">{{ Session::has('shopping_cart') ? Session::get('shopping_cart')->totalQty : '' }}</span> Shopping Cart</a></li>
                         <!-- Authentication Links -->
                         @guest
                             <li><a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a></li>

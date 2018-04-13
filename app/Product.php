@@ -19,4 +19,11 @@ class Product extends Model
     {
     	return $this->hasMany('App\OrderDetail');
     }
+
+    public static function getId($id)
+    {
+        $product = Product::where('id', '=', $id)->first();
+        // $product = Product::find(1);
+        return $product;
+    }
 }
