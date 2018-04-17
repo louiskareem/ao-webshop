@@ -39,7 +39,7 @@
 
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
-                        <li><a class="nav-link" href=""><span class="glyphicon glyphicon-shopping-cart"></span><span class="badge">{{ Session::has('shopping_cart') ? Session::get('shopping_cart')->totalQty : '' }}</span> Shopping Cart</a></li>
+                        <li><a class="nav-link" href="{{ action('OrderController@getShoppingCart') }}"><img src="../png/ic_shopping_cart_black_18dp_1x.png"> <span class="badge badge-primary">{{ Session::has('products') ? Session::get('products')->totalQty : '' }}</span></a></li>
                         <!-- Authentication Links -->
                         @guest
                             <li><a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a></li>

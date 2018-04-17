@@ -17,6 +17,9 @@ Route::get('/', function () {
 
 Auth::routes();
 
+/**
+ * Routes for Front page
+ */
 Route::get('/home', 'HomeController@index')->name('home');
 
 /**
@@ -35,3 +38,8 @@ Route::get('products/{id}/details', 'ProductController@display');
  * Routes for Orders
  */
 Route::get('order/{id}', 'OrderController@getProduct');
+
+/**
+ * Routes for Shopping Cart
+ */
+Route::get('shopping_cart', 'OrderController@getShoppingCart');
