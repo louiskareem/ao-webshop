@@ -28,8 +28,7 @@ class OrderController extends Controller
 		$request->session()->get('products');
 		Session::flash('message', 'Product has been added to your shopping cart!');
 
-		return redirect('categories');
-		// return view('shopping.details', compact('request'));
+		return redirect('products');
     }
 
     /**
@@ -38,14 +37,25 @@ class OrderController extends Controller
      */
     public function getShoppingCart()
     {
-    	if (!Session::has('products')) {
-    		dd('no money, no cart');
-    	}
-
     	$oldCart = Session::get('products');
     	$cart = new ShoppingCart($oldCart);
-    	// $scart = json_encode($cart, true);
-    	// dd($scarts); //$carts->products[2]['product']->name
-    	return view('shopping.cart', compact('cart')); //['products' => $cart->products, 'total-price' => $cart->totalPrice]
+    	// dd(Session::get('products'));
+    	return view('shopping.cart', compact('cart'));       //['products' => $cart->products, 'total-price' => $cart->totalPrice]
+    }
+
+    /**
+     * [deleteProductInCart description]
+     * @param  Request $request [description]
+     * @param  [type]  $id      [description]
+     * @return [type]           [description]
+     */
+    public function deleteProductInCart(Request $request, $id)
+    {
+    	$product = Product::findOrFail($id);
+    	$oldCart = Session::has('products') ? Session::get('products') : null;
+    	$cart = new ShoppingCart($oldCart);
+    	$cart->deleteProduct($oldCart, $product->id);
+    	$request->session()->get('products');
+    	return redirect('shopping_cart');
     }
 }

@@ -43,3 +43,4 @@ Route::get('order/{id}', 'OrderController@getProduct');
  * Routes for Shopping Cart
  */
 Route::get('shopping_cart', 'OrderController@getShoppingCart');
+Route::post('shopping_cart/{id}/delete', 'OrderController@deleteProductInCart');

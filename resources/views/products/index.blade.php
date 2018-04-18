@@ -21,7 +21,7 @@
                             @foreach($products as $product)
                                 <tr>
                                     <!-- <th scope="row">1</th> -->
-                                    <td>{{ $product->name }}</td>
+                                    <td><a href="{{ action('ProductController@display', $product->id) }}">{{ $product->name }}</a></td>
                                     <td>{{ $product->description }}</td>
                                     <td>&euro; {{ $product->price }}</td>
                                 </tr>

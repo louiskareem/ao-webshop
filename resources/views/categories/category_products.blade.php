@@ -11,7 +11,7 @@
                     <table class="table table-hover">
                         <thead>
                             <tr>
-                                    <th scope="col">Categories/Products</th>
+                                <th scope="col">Categories/{{ $categories->name }}</th>
                             </tr>
                         </thead>
                         <tbody>

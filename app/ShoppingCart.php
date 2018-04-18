@@ -48,21 +48,25 @@ class ShoppingCart
 		$this->totalQty++;
 		$this->totalPrice += $product->price;
 		// $cart = Session::put('SHOPPING_CART', $product);
-	} 
+	}
+
+/**
+ * [deleteProduct description]
+ * @param  [type] $product [description]
+ * @param  [type] $id      [description]
+ * @return [type]          [description]
+ */
+	public function deleteProduct($product, $id)
+	 {
+        foreach ($this->products as $product)
+        {	
+            if ($product['product']->id === $id) 
+            {     
+            	// dd(Session::get('products', $product['product']->id));
+            	Session::forget('products', $product['product']->id); 
+            }
+        }       
+        
+	 } 
 
 }
-
-
-// $product = Product::findOrFail($id);
- 
-// if (empty($request->session()->get('shopping_cart'))) {
-// 	$data = array();
-// 	$request->session()->put('shopping_cart', $data = array($product));
-
-// }elseif ($request->session()->get('shopping_cart', 'id') === $product = Product::where('id', $id)->first()) {
-// 	$request->session()->get('shopping_cart');
-
-// }elseif ($request->session()->get('shopping_cart', 'id') !== $product = Product::where('id', $id)->first()) {
-// 	$request->session()->push('shopping_cart' ,$product);
-// 	$request->session()->get('shopping_cart');
-// }
