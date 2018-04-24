@@ -43,7 +43,12 @@
 			                                <td></td>
 			                                <td><strong>Total: &euro;{{ $cart->totalPrice }}</strong></td>
 			                                <td></td>
-			                                <td><a href="#" class="btn btn-primary btn-block"><img src="../png/ic_shopping_basket_black_18dp_1x.png"> Checkout <i class="fa fa-angle-right"></i></a></td>
+			                                <td>
+			                                	<form action="{{ action('OrderController@addOrder') }}" method="POST">
+			                                		{{ csrf_field() }}
+			                                		<button class="btn btn-primary btn-block" type="submit"><img src="../png/ic_shopping_basket_black_18dp_1x.png"> Checkout</button><i class="fa fa-angle-right"></i>
+			                                	</form>
+			                                </td>
 			                            </tr>
 			                        </tfoot>
 		                    </table>
@@ -72,7 +77,11 @@
 		                                <td><a href="{{ action('ProductController@index') }}" class="btn btn-warning"><i class="fa fa-angle-left"></i> Continue Shopping</a></td>
 		                                <td></td>
 		                                <td><strong>Total: &euro;</strong></td>
-		                                <td><a href="#" class="btn btn-primary btn-block"><img src="../png/ic_shopping_basket_black_18dp_1x.png"> Checkout <i class="fa fa-angle-right"></i></a></td>
+		                                <td>
+		                                	<form action="{{ action('OrderController@addOrder') }}" method="POST">
+		                                		<button class="btn btn-primary btn-block" type="submit"><img src="../png/ic_shopping_basket_black_18dp_1x.png"> Checkout</button><i class="fa fa-angle-right"></i>
+		                                	</form>
+		                                </td>
 		                            </tr>
 		                        </tfoot>
 	                    </table>

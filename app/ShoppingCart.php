@@ -16,15 +16,22 @@ class ShoppingCart
 
 	/**
 	 * [__construct description]
-	 * @param [type] $oldCart [description]
+	 * @param [type] $session [description]
 	 */
-	public function __construct($oldCart)
+	public function __construct($session)
 	{
-		if (!empty($oldCart)) {
-			$this->products = $oldCart->products;
-			$this->totalQty = $oldCart->totalQty;
-			$this->totalPrice = $oldCart->totalPrice;
+		$session = session()->get('products');
+		// dd($session);
+		if (!empty($session)) {
+			$this->products = $session->products;
+			$this->totalQty = $session->totalQty;
+			$this->totalPrice = $session->totalPrice;
 		}
+	}
+
+	public function storeInSession()
+	{
+		
 	}
 
 	/**
@@ -34,7 +41,7 @@ class ShoppingCart
 	 */
 	public function addProduct($product, $id) 
 	{
-		$storedProduct = ['product' => $product, 'qty' => 0, 'price' => $product->price];
+		$storedProduct = ['id' => $id, 'product' => $product, 'qty' => 0, 'price' => $product->price];
 
 		if ($this->products) {
 			if (array_key_exists($id, $this->products)) {
@@ -57,16 +64,19 @@ class ShoppingCart
  * @return [type]          [description]
  */
 	public function deleteProduct($product, $id)
-	 {
+	{
         foreach ($this->products as $product)
         {	
-            if ($product['product']->id === $id) 
-            {     
-            	// dd(Session::get('products', $product['product']->id));
-            	Session::forget('products', $product['product']->id); 
+            if ($product['id'] === $id) 
+            {   
+            	// dd(Session::get($this->products["products, $id"]));
+            	// Session::forget($id, $this->products[$id]);
+            	// dd(session()->pull('products', $product['product']->id));
+            	// $session = session()->forget('products');
+            	Session::forget('products'); //Session::forget('products', $product['product']->id); 
             }
-        }       
+        }
         
-	 } 
+	} 
 
 }

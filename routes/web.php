@@ -35,12 +35,14 @@ Route::get('products', 'ProductController@index');
 Route::get('products/{id}/details', 'ProductController@display');
 
 /**
- * Routes for Orders
- */
-Route::get('order/{id}', 'OrderController@getProduct');
-
-/**
  * Routes for Shopping Cart
  */
-Route::get('shopping_cart', 'OrderController@getShoppingCart');
-Route::post('shopping_cart/{id}/delete', 'OrderController@deleteProductInCart');
+Route::get('products/{id}', 'OrderController@getProduct');
+Route::get('shopping-cart', 'OrderController@getShoppingCart');
+Route::post('shopping-cart/{id}/remove-product', 'OrderController@deleteProductInCart');
+Route::post('shopping-cart/order', 'OrderController@addOrder');
+
+/**
+ * Routes for Orders
+ */
+Route::get('orders', 'OrderController@getOrder');

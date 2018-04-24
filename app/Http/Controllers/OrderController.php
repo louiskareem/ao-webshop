@@ -8,6 +8,7 @@ use App\OrderDetail;
 use App\Product;
 use App\ShoppingCart;
 use Session;
+use Auth;
 
 class OrderController extends Controller
 {
@@ -20,12 +21,11 @@ class OrderController extends Controller
     public function getProduct(Request $request, $id)
     {
 		$product = Product::findOrFail($id);
-		$oldCart = Session::has('products') ? Session::get('products') : null;
-		$cart = new ShoppingCart($oldCart);
+		$session = session()->has('products') ? session()->get('products') : null;
+		$cart = new ShoppingCart($session);
 		$cart->addProduct($product, $product->id);
-		// $shoppingCart = ShoppingCart::addProduct($product);
-		$request->session()->put('products', $cart);
-		$request->session()->get('products');
+		session()->put('products', $cart);
+		session()->get('products');
 		Session::flash('message', 'Product has been added to your shopping cart!');
 
 		return redirect('products');
@@ -37,10 +37,10 @@ class OrderController extends Controller
      */
     public function getShoppingCart()
     {
-    	$oldCart = Session::get('products');
-    	$cart = new ShoppingCart($oldCart);
+    	$session = session()->get('products');
+    	$cart = new ShoppingCart($session);
     	// dd(Session::get('products'));
-    	return view('shopping.cart', compact('cart'));       //['products' => $cart->products, 'total-price' => $cart->totalPrice]
+    	return view('shopping.cart', compact('cart'));
     }
 
     /**
@@ -52,10 +52,33 @@ class OrderController extends Controller
     public function deleteProductInCart(Request $request, $id)
     {
     	$product = Product::findOrFail($id);
-    	$oldCart = Session::has('products') ? Session::get('products') : null;
-    	$cart = new ShoppingCart($oldCart);
-    	$cart->deleteProduct($oldCart, $product->id);
-    	$request->session()->get('products');
-    	return redirect('shopping_cart');
+    	$session = session()->has('products') ? session()->get('products') : null;
+    	$cart = new ShoppingCart($session);
+    	$cart->deleteProduct($session, $product->id);
+    	// $request->session()->put('products', $cart);
+    	session()->get('products');
+    	return redirect('shopping-cart');
+    }
+
+    /**
+     * [addOrder description]
+     * @param Request $request [description]
+     * @param [type]  $id      [description]
+     */
+    public function addOrder(Request $request)
+    {
+        $guest = Auth::guest();
+
+        if ($auth = Auth::user()) {
+            return $auth;
+        }
+
+        dd($request->session()->get('products'), $request, $auth);
+        
+    }
+
+    public function getOrder()
+    {
+        
     }
 }
