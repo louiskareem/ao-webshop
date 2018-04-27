@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Client;
 use App\OrderDetail;
+use App\Order;
 use App\Product;
 use App\ShoppingCart;
 use Session;
@@ -21,13 +22,8 @@ class OrderController extends Controller
     public function getProduct(Request $request, $id)
     {
 		$product = Product::findOrFail($id);
-		$session = session()->has('products') ? session()->get('products') : null;
-		$cart = new ShoppingCart($session);
-		$cart->addProduct($product, $product->id);
-		session()->put('products', $cart);
-		session()->get('products');
-		Session::flash('message', 'Product has been added to your shopping cart!');
-
+		$cart = new ShoppingCart($request->session());
+		$cart->add($product->id);
 		return redirect('products');
     }
 
@@ -35,12 +31,13 @@ class OrderController extends Controller
      * [getShoppingCart description]
      * @return [type] [description]
      */
-    public function getShoppingCart()
+    public function getShoppingCart(Request $request)
     {
-    	$session = session()->get('products');
-    	$cart = new ShoppingCart($session);
-    	// dd(Session::get('products'));
-    	return view('shopping.cart', compact('cart'));
+    	$cart = new ShoppingCart($request->session());
+        foreach ($cart->storedItems as $key) {
+            $p = $key->qty * $key->productId->price;
+        }
+    	return view('shopping.cart', compact('cart', 'p'));
     }
 
     /**
@@ -52,12 +49,19 @@ class OrderController extends Controller
     public function deleteProductInCart(Request $request, $id)
     {
     	$product = Product::findOrFail($id);
-    	$session = session()->has('products') ? session()->get('products') : null;
-    	$cart = new ShoppingCart($session);
-    	$cart->deleteProduct($session, $product->id);
-    	// $request->session()->put('products', $cart);
-    	session()->get('products');
+    	$cart = new ShoppingCart($request->session());
+    	$cart->deleteProduct($product->id);
     	return redirect('shopping-cart');
+    }
+
+    /**
+     * [getOrder description]
+     * @return [type] [description]
+     */
+    public function getOrder()
+    {
+        Session::flash('message', 'Product has been added to your shopping cart!');
+        return view('orders.index');
     }
 
     /**
@@ -67,18 +71,50 @@ class OrderController extends Controller
      */
     public function addOrder(Request $request)
     {
-        $guest = Auth::guest();
-
         if ($auth = Auth::user()) {
-            return $auth;
+            $auth;
         }
 
-        dd($request->session()->get('products'), $request, $auth);
-        
-    }
+        $products = $request->session()->get('shopping_cart');
+        $amount = $request->quantity;
 
-    public function getOrder()
-    {
-        
+        if ($products != NULL) {
+            foreach ($products as $product) {
+                $order = new Order;
+                $order->client_id = $auth->id;
+                    // if ($order->client_id != NULL) {
+
+                    //     if ($auth->id == $order->client_id) { //$client = Client::where('id', $order->client_id)->first()
+
+                    //         $order->client_id = $auth->id;
+
+                    //     }else{
+
+                    //         $order->client_id;
+
+                    //     }
+
+                    // }else{
+
+                    //     $order->client_id = NULL;
+
+                    // }
+
+                $order->status = env('ORDER_STATUS');
+                $order->save();
+
+                $odetail = new OrderDetail;
+                $odetail->order_id = $order->id;
+                $odetail->product_id = $product->productId->id;
+                $odetail->total_products = $product->qty;
+                    foreach ($amount as $key => $value) {
+                        if ($key == $product->productId->id) {
+                            $odetail->total_products = $value;
+                        }
+                    }
+                $odetail->save();
+            }
+        }
+        return redirect('orders');
     }
 }

@@ -5,14 +5,16 @@ namespace App;
 use Illuminate\Http\Request;
 use App\Product;
 use Session;
+use App\StoredItem;
 
 class ShoppingCart
 {
 	const SHOPPING_CART = 'shopping_cart';
-	// public $cart;
-	public $products = null;
-	public $totalQty = 0;
-	public $totalPrice = 0;
+	// public $products = null;
+	// public $totalQty = 0;
+	// public $totalPrice = 0;
+	public $session;
+	public $storedItems = [];
 
 	/**
 	 * [__construct description]
@@ -20,63 +22,62 @@ class ShoppingCart
 	 */
 	public function __construct($session)
 	{
-		$session = session()->get('products');
-		// dd($session);
+		$this->session = session();
+
 		if (!empty($session)) {
-			$this->products = $session->products;
+/*			$this->products = $session->products;
 			$this->totalQty = $session->totalQty;
-			$this->totalPrice = $session->totalPrice;
+			$this->totalPrice = $session->totalPrice;*/
+			$this->storedItems = $this->session->get(self::SHOPPING_CART);
 		}
+	}
+
+	public function add($productId) {
+		$product = Product::findOrFail($productId);
+		$qty = 0;
+		$qty++;
+		$totalQty = 0;
+		$totalQty++;
+		$totalPrice = 0;
+		$totalPrice += $product->price;
+
+		if ($product !== NULL) {
+			$storedItem = new StoredItem($product, $qty);
+			$this->storedItems = session()->push('shopping_cart', $storedItem);
+			// return $this->storeInSession();
+			// $this->session->put(self::SHOPPING_CART, $this->storedItems);
+		}
+		// dd($this->session);
+	}
+
+	public function getAll() {
+		return $this->storeInSession();
+		// return $this->session->put(self::SHOPPING_CART, $this->storedItems);
+	}
+
+	/**
+	 * [deleteProduct description]
+	 * @param  [type] $product [description]
+	 * @param  [type] $id      [description]
+	 * @return [type]          [description]
+	 */
+	public function deleteProduct($productId)
+	{
+		foreach ($this->storedItems as $key => $item) {
+            if ($item->productId->id == $productId)
+            {   
+            	// dd($item->productId);
+            	// $this->session->pull('SHOPPING_CART', $this->storedItems->id);
+
+            	unset($this->storedItems[$key]);
+            	// $this->storedItems = session()->push('shopping_cart', $storedItem);
+            	return $this->storeInSession();
+            }
+        }
 	}
 
 	public function storeInSession()
 	{
-		
+		$this->session->put(self::SHOPPING_CART, $this->storedItems);
 	}
-
-	/**
-	 * [addProduct description]
-	 * @param [type] $product [description]
-	 * @param [type] $id      [description]
-	 */
-	public function addProduct($product, $id) 
-	{
-		$storedProduct = ['id' => $id, 'product' => $product, 'qty' => 0, 'price' => $product->price];
-
-		if ($this->products) {
-			if (array_key_exists($id, $this->products)) {
-				$storedProduct = $this->products[$id];
-			}
-		}
-
-		$storedProduct['qty']++;
-		$storedProduct['price'] = $product->price * $storedProduct['qty'];
-		$this->products[$id] = $storedProduct;
-		$this->totalQty++;
-		$this->totalPrice += $product->price;
-		// $cart = Session::put('SHOPPING_CART', $product);
-	}
-
-/**
- * [deleteProduct description]
- * @param  [type] $product [description]
- * @param  [type] $id      [description]
- * @return [type]          [description]
- */
-	public function deleteProduct($product, $id)
-	{
-        foreach ($this->products as $product)
-        {	
-            if ($product['id'] === $id) 
-            {   
-            	// dd(Session::get($this->products["products, $id"]));
-            	// Session::forget($id, $this->products[$id]);
-            	// dd(session()->pull('products', $product['product']->id));
-            	// $session = session()->forget('products');
-            	Session::forget('products'); //Session::forget('products', $product['product']->id); 
-            }
-        }
-        
-	} 
-
 }
