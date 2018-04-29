@@ -39,7 +39,7 @@ Route::get('products/{id}/details', 'ProductController@display');
  */
 Route::get('products/{id}', 'OrderController@getProduct');
 Route::get('shopping-cart', 'OrderController@getShoppingCart');
-Route::post('shopping-cart/{id}/remove-product', 'OrderController@deleteProductInCart');
+Route::post('shopping-cart/remove-product', 'OrderController@deleteProductInCart');
 Route::post('shopping-cart/order', 'OrderController@addOrder');
 
 /**

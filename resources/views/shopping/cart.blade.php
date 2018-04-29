@@ -1,6 +1,47 @@
 @extends('layouts.app')
 
-@section('content')
+@section('content')    
+<script
+  src="https://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous"></script>
+
+<script>
+	$(document).ready(function() {
+		$('.delete').click(function(event) {
+			event.preventDefault();
+
+            var tableUrl = '{{ action('OrderController@deleteProductInCart') }}';
+            var formData = {
+                 // id: this.id, //get the right id, i.e meter->id
+                 title: this.title //the value of input fields, e.g meter_id
+            };
+
+			$.ajaxSetup({
+				headers: {
+					'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+				}
+			});
+
+			$.ajax({
+				url: tableUrl,
+				type: 'POST',
+				data: formData,
+			})
+			.done(function(data) {
+				alert('hey');
+				console.log("success");
+			})
+			.fail(function(data) {
+				console.log("error");
+			})
+			.always(function(data) {
+				console.log("complete");
+			});
+		});
+	});
+</script>
+
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
@@ -31,7 +72,7 @@
 			                        		<td><input class="col" type="number" name="quantity[ {{$c->productId->id}} ]" value="{{ $c->qty }}"></td>
 			                        		<td>&euro;{{ $c->productId->price }}</td>
 			                        		<td>
-				                        		<button id="delete" value="{{ $c->productId->id }}" class="btn btn-danger">Delete</button>
+				                        		<input value="Delete" title="{{ $c->productId->id }}" class="btn btn-danger delete">
 			                        		</td>
 			                        	</tr>
 		                        	@endforeach
@@ -87,61 +128,4 @@
         </div>
     </div>
 </div>
-@endsection
-
-@section('scripts')
-    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-
-
-<script>
-
-'use strict';
-var $ = jQuery;
-
-$(document).ready(function(){
-	$("#delete").click(function(event) {
-		event.preventDefault();
-		var TableURL = '{{ url('shopping-cart/remove-product') }}';
-		var formData = {
-			id: this.id
-			value: this.value
-		}
-
-		$.ajax({
-			url: TableURL,
-			type: "POST",
-			data: formData,
-
-            success: function(data) {
-
-                swal({
-                    title: "Success",
-                    text: "Meter ID is succesvol verwerkt.",
-                    icon: "success"
-                })
-
-                setTimeout(function(){
-                 location.reload();
-                }, 500);
-
-            },
-            error: function (data) {
-
-                swal({
-                    title: "Error",
-                    text: "Helaas is de data van Meter ID niet verwerkt. Probeer het opnieuw.",
-                    icon: "warning"
-                })
-
-                setTimeout(function(){
-                    location.reload();
-                }, 500);
-
-            }
-		})
-	});
-}
-</script>
 @endsection

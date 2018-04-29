@@ -52,6 +52,7 @@
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="{{ action('CategoryController@index') }}">Categories</a>
                                     <a class="dropdown-item" href="{{ action('ProductController@index') }}">Products</a>
+                                    <a class="dropdown-item" href="{{ action('OrderController@getOrder') }}">Orders</a>
                                 </div>
                             </li>
                         @else
@@ -63,6 +64,7 @@
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="{{ action('CategoryController@index') }}">Categories</a>
                                     <a class="dropdown-item" href="{{ action('ProductController@index') }}">Products</a>
+                                    <a class="dropdown-item" href="{{ action('OrderController@getOrder') }}">Orders</a>
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">

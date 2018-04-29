@@ -34,8 +34,11 @@ class OrderController extends Controller
     public function getShoppingCart(Request $request)
     {
     	$cart = new ShoppingCart($request->session());
-        foreach ($cart->storedItems as $key) {
-            $p = $key->qty * $key->productId->price;
+
+        if ($cart->storedItems !== NULL) {
+            foreach ($cart->storedItems as $key) {
+                $p = $key->qty * $key->productId->price;
+            }
         }
     	return view('shopping.cart', compact('cart', 'p'));
     }
@@ -46,11 +49,13 @@ class OrderController extends Controller
      * @param  [type]  $id      [description]
      * @return [type]           [description]
      */
-    public function deleteProductInCart(Request $request, $id)
+    public function deleteProductInCart(Request $request)
     {
-    	$product = Product::findOrFail($id);
-    	$cart = new ShoppingCart($request->session());
-    	$cart->deleteProduct($product->id);
+        $input = $request->all();
+        dd($input);
+    	// $product = Product::findOrFail($id);
+    	// $cart = new ShoppingCart($request->session());
+    	// $cart->deleteProduct($product->id);
     	return redirect('shopping-cart');
     }
 
@@ -61,7 +66,8 @@ class OrderController extends Controller
     public function getOrder()
     {
         Session::flash('message', 'Product has been added to your shopping cart!');
-        return view('orders.index');
+        $order_details = OrderDetail::all();
+        return view('orders.index', compact('order_details'));
     }
 
     /**

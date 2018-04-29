@@ -68,7 +68,6 @@ class ShoppingCart
             {   
             	// dd($item->productId);
             	// $this->session->pull('SHOPPING_CART', $this->storedItems->id);
-
             	unset($this->storedItems[$key]);
             	// $this->storedItems = session()->push('shopping_cart', $storedItem);
             	return $this->storeInSession();

@@ -16,6 +16,29 @@
 					    </div>
 					@endif
 
+                    <table class="table">
+                        <tr>
+                            <td>Client</td>
+                            @foreach($order_details as $order_detail)
+                                <td>{{ $order_detail->order->client->user->name }}</td>
+                            @endforeach
+                        </tr>
+                        <tr>
+                            <td>Product</td>
+                            @foreach($order_details as $order_detail)
+                                <td>{{$order_detail->product->name}}</td>
+                            @endforeach
+                        </tr>
+                        <tr>
+                            <td>Status</td>
+                            @foreach($order_details as $order_detail)
+                                <td>{{ $order_detail->order->status }}</td>
+                            @endforeach
+                        </tr>
+                    </table>
+
+                    <button class="btn btn-button-primary">Continue</button>
+                    <button class="btn btn-button-info">Home</button>
                 </div>
 
             </div>
