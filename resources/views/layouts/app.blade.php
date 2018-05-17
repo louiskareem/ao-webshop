@@ -10,9 +10,6 @@
 
     <title>{{ 'Da Vinci Webshop' }}</title>
 
-    <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
-
     <!-- Fonts -->
     <link rel="dns-prefetch" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Raleway:300,400,600" rel="stylesheet" type="text/css">
@@ -36,10 +33,10 @@
                     <ul class="navbar-nav mr-auto">
 
                     </ul>
-
+                    
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
-                        <li><a class="nav-link" href="{{ action('OrderController@getShoppingCart') }}"><img src="../png/ic_shopping_cart_black_18dp_1x.png"> <span class="badge badge-primary"></span></a></li>
+                        <li><a class="nav-link" href="{{ action('OrderController@getShoppingCart') }}"><img src="png/ic_shopping_cart_black_18dp_1x.png"> <span class="badge badge-primary"></span></a></li>
                         <!-- Authentication Links -->
                         @guest
                             <li><a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a></li>
@@ -86,5 +83,7 @@
             @yield('content')
         </main>
     </div>
+    <!-- Scripts -->
+    <script src="{{ asset('js/app.js') }}" defer></script>
 </body>
 </html>

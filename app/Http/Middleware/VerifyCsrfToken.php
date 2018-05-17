@@ -13,5 +13,6 @@ class VerifyCsrfToken extends Middleware
      */
     protected $except = [
         //
+        // 'http://ao-webshop.local/shopping-cart/remove-product'
     ];
 }

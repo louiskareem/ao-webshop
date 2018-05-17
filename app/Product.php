@@ -23,7 +23,6 @@ class Product extends Model
     public static function getId($id)
     {
         $product = Product::where('id', '=', $id)->first();
-        // $product = Product::find(1);
         return $product;
     }
 }

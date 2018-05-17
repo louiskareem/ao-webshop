@@ -1,47 +1,7 @@
 @extends('layouts.app')
 
-@section('content')    
-<script
-  src="https://code.jquery.com/jquery-3.3.1.min.js"
-  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-  crossorigin="anonymous"></script>
-
-<script>
-	$(document).ready(function() {
-		$('.delete').click(function(event) {
-			event.preventDefault();
-
-            var tableUrl = '{{ action('OrderController@deleteProductInCart') }}';
-            var formData = {
-                 // id: this.id, //get the right id, i.e meter->id
-                 title: this.title //the value of input fields, e.g meter_id
-            };
-
-			$.ajaxSetup({
-				headers: {
-					'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-				}
-			});
-
-			$.ajax({
-				url: tableUrl,
-				type: 'POST',
-				data: formData,
-			})
-			.done(function(data) {
-				alert('hey');
-				console.log("success");
-			})
-			.fail(function(data) {
-				console.log("error");
-			})
-			.always(function(data) {
-				console.log("complete");
-			});
-		});
-	});
-</script>
-
+@section('content')
+<meta name="csrf-token" content="{{ csrf_token() }}">
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
@@ -69,20 +29,27 @@
 			                        	<tr>
 			                        		<td><a href="{{ action('ProductController@display', $c->productId->id) }}">{{ $c->productId->name }}</a></td>
 			                        		<td>{{ $c->productId->description }}</td>
-			                        		<td><input class="col" type="number" name="quantity[ {{$c->productId->id}} ]" value="{{ $c->qty }}"></td>
-			                        		<td>&euro;{{ $c->productId->price }}</td>
+			                        		<td id="quantity"><input class="col" type="number" name="quantity[ {{$c->productId->id}} ]" value="{{ $c->qty }}"></td>
+			                        		<td id="price">&euro; {{ $c->productId->price }}</td>
 			                        		<td>
-				                        		<input value="Delete" title="{{ $c->productId->id }}" class="btn btn-danger delete">
+				                        		<input value="Delete" name="delete" title="{{ $c->productId->id }}" class="btn btn-danger delete">
 			                        		</td>
 			                        	</tr>
 		                        	@endforeach
-		                        @endif
+			                    @else
+			                        	<tr>
+			                        		<td>
+			                        			Your shopping cart is empty. Please spend some money to make orders.
+			                        		</td>
+			                        	</tr>
+			                    @endif
 		                        </tbody>
 		                        <tfoot>
 		                            <tr>
 		                                <td><a href="{{ action('ProductController@index') }}" class="btn btn-warning"><i class="fa fa-angle-left"></i> Continue Shopping</a></td>
 		                                <td></td>	
-		                                <td><strong>Total: &euro; {{ $p }}</strong></td>
+		                                
+		                                <td class="col total"><strong>Total: &euro; {{ $p }}</strong></td>
 		                                <td></td>
 		                                <td>
 	                                		<button class="btn btn-primary btn-block" type="submit"><img src="../png/ic_shopping_basket_black_18dp_1x.png"> Checkout</button><i class="fa fa-angle-right"></i>
@@ -128,4 +95,82 @@
         </div>
     </div>
 </div>
+
+<script
+  src="https://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous"></script>
+
+<script>
+	$(document).ready(function() {
+
+		$('#quantity').change(function(event) {
+			event.preventDefault();
+
+			var q = ({{ $c->qty++ }});
+	        var tableUrl = '{{ action('OrderController@getShoppingCart') }}';
+	        var formData = {
+	            value: q //the value of input fields, e.g meter_id
+	        };
+
+	        console.log(formData);
+
+			$.ajaxSetup({
+				headers: {
+					'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+				}
+			});
+
+			$.ajax({
+				url: tableUrl,
+				type: 'POST',
+				data: formData,
+		        success: function(data) {
+		          	// alert("data sent!");
+		          	console.log('yes');
+	                setTimeout(function(){
+	                    location.reload();
+	                }, 50);
+		        },
+		        error: function(data) {
+		          	alert("There was an error. Try again please!");
+		          	// console.log('no');
+		        }
+	    	});
+
+		});
+
+		$('.delete').click(function(event) {
+			event.preventDefault();
+
+            var tableUrl = '{{ action('OrderController@deleteProductInCart') }}';
+            var formData = {
+                title: this.title //the value of input fields, e.g meter_id
+            };
+
+			$.ajaxSetup({
+				headers: {
+					'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+				}
+			});
+
+			$.ajax({
+				url: tableUrl,
+				type: 'POST',
+				data: formData,
+		        success: function(data) {
+		          	// alert("data sent!");
+		          	console.log('yes');
+                    setTimeout(function(){
+                        location.reload();
+                    }, 100);
+		        },
+		        error: function(data) {
+		          	alert("There was an error. Try again please!");
+		          	// console.log('no');
+		        }
+	    	});
+		});
+	});
+</script>
 @endsection

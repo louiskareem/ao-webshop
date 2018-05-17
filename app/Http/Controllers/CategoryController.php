@@ -18,7 +18,12 @@ class CategoryController extends Controller
 
 		return view('categories.index', compact('categories'));
 	}
-
+	
+	/**
+	 * [display description]
+	 * @param  [type] $id [description]
+	 * @return [type]     [description]
+	 */
 	public function display($id)
 	{
 		$categories = Category::findOrFail($id);

@@ -10,6 +10,7 @@ use App\Product;
 use App\ShoppingCart;
 use Session;
 use Auth;
+use Input;
 
 class OrderController extends Controller
 {
@@ -34,12 +35,14 @@ class OrderController extends Controller
     public function getShoppingCart(Request $request)
     {
     	$cart = new ShoppingCart($request->session());
+        $p = 0;
 
         if ($cart->storedItems !== NULL) {
-            foreach ($cart->storedItems as $key) {
-                $p = $key->qty * $key->productId->price;
+            foreach ($cart->storedItems as $key => $item) {
+                $p = $p + ($item->qty * $item->productId->price);
             }
         }
+
     	return view('shopping.cart', compact('cart', 'p'));
     }
 
@@ -51,11 +54,8 @@ class OrderController extends Controller
      */
     public function deleteProductInCart(Request $request)
     {
-        $input = $request->all();
-        dd($input);
-    	// $product = Product::findOrFail($id);
-    	// $cart = new ShoppingCart($request->session());
-    	// $cart->deleteProduct($product->id);
+    	$cart = new ShoppingCart($request->session());
+    	$cart->deleteProduct($request->input('title'));
     	return redirect('shopping-cart');
     }
 
