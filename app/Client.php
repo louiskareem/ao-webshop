@@ -25,7 +25,7 @@ class Client extends Model
     }
 
     /**
-     * [addUserId description]
+     * [addUserId. Static method to add a new client if user ID is not equal to null]
      * @param [type] $user_id [description]
      */
     public static function addUserId($user_id)

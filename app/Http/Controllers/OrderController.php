@@ -15,7 +15,7 @@ use Input;
 class OrderController extends Controller
 {
     /**
-     * [getProduct description]
+     * [getProduct. Method to get product using request and ID variable.]
      * @param  Request $request [description]
      * @param  [type]  $id      [description]
      * @return [type]           [description]
@@ -25,29 +25,24 @@ class OrderController extends Controller
 		$product = Product::findOrFail($id);
 		$cart = new ShoppingCart($request->session());
 		$cart->add($product->id);
+
 		return redirect('products');
     }
 
     /**
-     * [getShoppingCart description]
+     * [getShoppingCart. Method to get shopping cart view using request and Shopping Cart class]
      * @return [type] [description]
      */
     public function getShoppingCart(Request $request)
     {
     	$cart = new ShoppingCart($request->session());
-        $p = 0;
+        $items = $cart->getItems();
 
-        if ($cart->storedItems !== NULL) {
-            foreach ($cart->storedItems as $key => $item) {
-                $p = $p + ($item->qty * $item->productId->price);
-            }
-        }
-
-    	return view('shopping.cart', compact('cart', 'p'));
+    	return view('shopping.cart', compact('items')); //['items' => $items, 'totalPrice' => $totalPrice]
     }
 
     /**
-     * [deleteProductInCart description]
+     * [deleteProductInCart. Method to delete product/item from the shopping cart using request and Shopping Cart class]
      * @param  Request $request [description]
      * @param  [type]  $id      [description]
      * @return [type]           [description]
@@ -56,38 +51,44 @@ class OrderController extends Controller
     {
     	$cart = new ShoppingCart($request->session());
     	$cart->deleteProduct($request->input('title'));
-    	return redirect('shopping-cart');
+
+    	return redirect('products');
     }
 
     /**
-     * [getOrder description]
+     * [getOrder. Method to get order view]
      * @return [type] [description]
      */
     public function getOrder()
     {
         Session::flash('message', 'Product has been added to your shopping cart!');
         $order_details = OrderDetail::all();
+
         return view('orders.index', compact('order_details'));
     }
 
     /**
-     * [addOrder description]
+     * [addOrder. Method to add a new order to database using request]
      * @param Request $request [description]
      * @param [type]  $id      [description]
      */
     public function addOrder(Request $request)
     {
+        // If user is logged in then continue
         if ($auth = Auth::user()) {
             $auth;
         }
 
+        //request variables
         $products = $request->session()->get('shopping_cart');
         $amount = $request->quantity;
 
+        // If products is not equal to null then do an iteration of each product. Create new order and order_detail
         if ($products != NULL) {
             foreach ($products as $product) {
                 $order = new Order;
                 $order->client_id = $auth->id;
+                
                     // if ($order->client_id != NULL) {
 
                     //     if ($auth->id == $order->client_id) { //$client = Client::where('id', $order->client_id)->first()
@@ -121,6 +122,7 @@ class OrderController extends Controller
                 $odetail->save();
             }
         }
+        
         return redirect('orders');
     }
 }

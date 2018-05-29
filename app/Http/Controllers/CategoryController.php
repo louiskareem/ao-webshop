@@ -9,7 +9,7 @@ use App\Product;
 class CategoryController extends Controller
 {
 	/**
-	 * [index description]
+	 * [index. Method to get categories view]
 	 * @return [type] [description]
 	 */
 	public function index()
@@ -20,7 +20,7 @@ class CategoryController extends Controller
 	}
 	
 	/**
-	 * [display description]
+	 * [display. Method to display products belonging to category]
 	 * @param  [type] $id [description]
 	 * @return [type]     [description]
 	 */

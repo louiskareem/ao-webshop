@@ -47,3 +47,5 @@ Route::post('shopping-cart/order', 'OrderController@addOrder');
  * Routes for Orders
  */
 Route::get('orders', 'OrderController@getOrder');
+
+// Route::get('api', 'ApiController@index');

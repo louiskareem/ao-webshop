@@ -2,7 +2,7 @@
 
 @section('content')
 <meta name="csrf-token" content="{{ csrf_token() }}">
-<div class="container">
+<div class="container-fluid">
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
@@ -24,24 +24,18 @@
 		                            </tr>
 		                        </thead>
 		                        <tbody>
-		                        @if(count($cart) > 0)
-		                        	@foreach($cart->storedItems as $c)
+		                        @if(count($items) > 0)
+		                        	@foreach($items as $c)
 			                        	<tr>
 			                        		<td><a href="{{ action('ProductController@display', $c->productId->id) }}">{{ $c->productId->name }}</a></td>
 			                        		<td>{{ $c->productId->description }}</td>
-			                        		<td id="quantity"><input class="col" type="number" name="quantity[ {{$c->productId->id}} ]" value="{{ $c->qty }}"></td>
-			                        		<td id="price">&euro; {{ $c->productId->price }}</td>
+			                        		<td id="quantity"><input id="quanquan" class="col-sm-4" type="number" name="quantity[ {{$c->productId->id}} ]" value="{{ $c->qty }}"></td>
+			                        		<td><span class="col">&euro;</span><input id="price" value="{{ $c->productId->price }}" disabled></td>
 			                        		<td>
 				                        		<input value="Delete" name="delete" title="{{ $c->productId->id }}" class="btn btn-danger delete">
 			                        		</td>
 			                        	</tr>
 		                        	@endforeach
-			                    @else
-			                        	<tr>
-			                        		<td>
-			                        			Your shopping cart is empty. Please spend some money to make orders.
-			                        		</td>
-			                        	</tr>
 			                    @endif
 		                        </tbody>
 		                        <tfoot>
@@ -49,7 +43,7 @@
 		                                <td><a href="{{ action('ProductController@index') }}" class="btn btn-warning"><i class="fa fa-angle-left"></i> Continue Shopping</a></td>
 		                                <td></td>	
 		                                
-		                                <td class="col total"><strong>Total: &euro; {{ $p }}</strong></td>
+		                                <td class="col total"><strong></strong></td>
 		                                <td></td>
 		                                <td>
 	                                		<button class="btn btn-primary btn-block" type="submit"><img src="../png/ic_shopping_basket_black_18dp_1x.png"> Checkout</button><i class="fa fa-angle-right"></i>
@@ -103,41 +97,15 @@
 
 <script>
 	$(document).ready(function() {
+		var p = $('#price').val();
+		$('.total').html('Total: &euro; ' + p);
 
-		$('#quantity').change(function(event) {
-			event.preventDefault();
-
-			var q = ({{ $c->qty++ }});
-	        var tableUrl = '{{ action('OrderController@getShoppingCart') }}';
-	        var formData = {
-	            value: q //the value of input fields, e.g meter_id
-	        };
-
-	        console.log(formData);
-
-			$.ajaxSetup({
-				headers: {
-					'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-				}
-			});
-
-			$.ajax({
-				url: tableUrl,
-				type: 'POST',
-				data: formData,
-		        success: function(data) {
-		          	// alert("data sent!");
-		          	console.log('yes');
-	                setTimeout(function(){
-	                    location.reload();
-	                }, 50);
-		        },
-		        error: function(data) {
-		          	alert("There was an error. Try again please!");
-		          	// console.log('no');
-		        }
-	    	});
-
+		$('#quantity').change(function() {
+			var q = $('#quanquan').val(); 
+			var totalprice = q * p;
+			
+			$('.total').html('Total: &euro; ' + totalprice);
+			// console.log(totalprice);
 		});
 
 		$('.delete').click(function(event) {

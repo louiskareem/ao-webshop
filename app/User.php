@@ -27,6 +27,10 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    /**
+     * 
+     * @return [type] [description]
+     */
     public function client()
     {
         return $this->hasOne('App\Client');

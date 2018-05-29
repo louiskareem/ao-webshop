@@ -9,17 +9,18 @@ use Session;
 class ProductController extends Controller
 {
 	/**
-	 * [index description]
+	 * [index. Method to get products view]
 	 * @return [type] [description]
 	 */
 	public function index()
 	{
 		$products = Product::all();
+
 		return view('products.index', compact('products'));
 	}
 
 	/**
-	 * [display description]
+	 * [display. Method to display product's details in separate view]
 	 * @param  [type] $id [description]
 	 * @return [type]     [description]
 	 */
@@ -27,6 +28,7 @@ class ProductController extends Controller
 	{
 		$product = Product::findOrFail($id);
 		Session::flash('message', 'Product has been added to your shopping cart!');
+
 		return view('products.product_details', compact('product'));
 	}
 }
