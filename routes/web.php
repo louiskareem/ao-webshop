@@ -49,3 +49,7 @@ Route::post('shopping-cart/order', 'OrderController@addOrder');
 Route::get('orders', 'OrderController@getOrder');
 
 // Route::get('api', 'ApiController@index');
+ 
+// Route::resource('webshop', 'ApiController');
+
+// Route::get('/webshop', 'ApiController@index');

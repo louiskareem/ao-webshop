@@ -17,6 +17,17 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-// Route::resource('/cruds', 'ApiController');
+// Route::group([
 
-// Route::get('api', 'ApiController@index');
+//     'middleware' => 'api',
+//     'prefix' => 'auth'
+
+// ], function ($router) {
+
+
+Route::middleware('jwt.auth')->get('users', function(Request $request) {
+    return auth()->user();
+});
+
+Route::post('user/register', 'APIRegisterController@register');
+Route::post('user/login', 'APILoginController@login');

@@ -6,8 +6,16 @@
  */
 
 require('./bootstrap');
+import VueRouter from 'vue-router';
+import example from './components/HomeComponent.vue';
+import routes from './routes';
+
+Vue.use(VueRouter);
 
 window.Vue = require('vue');
+// window.flash = function(message, type = 'success') {
+//     window.events.$emit('flash', message, type);
+// };
 
 Vue.config.devtools = true;
 Vue.config.performance = true;
@@ -20,12 +28,15 @@ Vue.config.performance = true;
 
 //Vue.component('example', require('./components/ExampleComponent.vue'));
 
-import example from './components/ExampleComponent.vue';
+const router = new VueRouter({
+    routes
+});
 
 const app = new Vue({
   el: '#app',
   components: {
     example
   },
-  render: h => h(example)
+  render: h => h(example),
+  router,
 });

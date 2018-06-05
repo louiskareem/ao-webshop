@@ -16,7 +16,6 @@ use Input;
 
 class ApiController extends Controller
 {
-    
     public function index()
     {
     	$product = Product::all();
@@ -25,18 +24,25 @@ class ApiController extends Controller
     	return response($apiProduct);
     }
 
-    public function create()
+    public function create(Request $request)
     {
-    	# code...
+        // $validatedNoteData = $request->validate([
+        //     'title' => 'required',
+        //     'is_favourite' => 'required',
+        // ]);
+        // $note = Note::create($validatedNoteData);
+        // return response()->json($note);
     }
 
-    public function update()
+    public function update(Request $request, $id)
     {
-    	# code...
+        // $note = Note::find($id)->update(['title' => $request->get('title')]);
+        // return response()->json($note);
     }
 
-    public function delete()
+    public function destroy($id)
     {
-    	# code...
+        // $note = Note::findOrFail($id);
+        // return response()->json($note->delete());
     }
 }
